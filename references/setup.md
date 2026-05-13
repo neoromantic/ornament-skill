@@ -1,9 +1,28 @@
 # Setup
 
-## API key
+## 1. Create an Ornament Pro account
 
-Ornament issues a long JWE token (starts with `eyJhbGciOiJBMjU2S1ciLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIn0.…`).
-You can get yours at https://ornament.readme.io/reference/obtaining-api-key.
+The API is gated behind Pro. Sign up at https://pro.ornament.health/. The free tier is enough for read access to your own labs.
+
+## 2. Link at least one patient
+
+A fresh Pro account has only the demo patient (`Daniel Smith`). To see real data:
+
+1. In Ornament Pro open **Patients → Invite patient**.
+2. Ornament generates a unique invite link.
+3. Send that link to the patient (or open it yourself in another browser to invite your own profile).
+4. The patient signs in / signs up and grants you read access.
+5. Once they accept, their PID (UUID) appears in `GET /healer/linked-profiles` and `ornament.py profiles`.
+
+The API also exposes `POST /accounting-api/public/v1.0/user/linked-profiles/{pid_or_email}` for programmatic creation, but the invite-link flow is what the UI uses and is normally easier.
+
+## 3. Get the API key
+
+Pro → Account → **Developer tools → Get API Key**. Ornament issues a long JWE token (starts with `eyJhbGciOiJBMjU2S1ciLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIn0.…`).
+
+If you'd rather not click through the dashboard, ask Claude to run the onboarding via the `agent-browser` skill — see `ornament.py onboard` for the step list it'll follow.
+
+## 4. Save the key
 
 The skill resolves the key in this order:
 

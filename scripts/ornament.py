@@ -57,6 +57,41 @@ def _resolve_profile(pid_or_name: str) -> tuple[str, dict[str, Any]]:
     sys.exit(f"Multiple profiles match '{pid_or_name}': {names}")
 
 
+# ---------- onboard ----------
+
+ONBOARD_STEPS = """\
+Ornament Pro onboarding — required before this skill is useful
+
+The API only answers calls for accounts registered at Ornament Pro. Follow
+these steps, then run `ornament.py auth set` to save the key.
+
+  1. Sign up at https://pro.ornament.health/ (email or SSO; free tier OK).
+  2. In Pro → "Patients" → "Invite patient": Ornament generates a unique
+     invite link. Send it to the patient, or open it yourself in another
+     browser to onboard your own profile. The patient confirms access.
+  3. In Pro → Account → "Developer tools" → "Get API Key": copy the long
+     JWE token (it starts with `eyJhbGciOiJBMjU2S1ciLCJlbmMi...`).
+  4. Save it locally:
+
+         ornament.py auth set            # prompts for hidden input
+         ornament.py auth status         # verify
+
+  5. Confirm the linked profile shows up:
+
+         ornament.py profiles
+
+Don't want to click through it yourself?
+  Ask Claude to drive the steps above via the `agent-browser` skill — it
+  can open the Pro dashboard, register/sign in, copy the API key, and
+  hand it to `auth set`. Phrase it like:
+      "Use agent-browser to onboard me to Ornament Pro."
+"""
+
+
+def cmd_onboard(args: argparse.Namespace) -> None:  # noqa: ARG001
+    sys.stdout.write(ONBOARD_STEPS)
+
+
 # ---------- auth ----------
 
 def cmd_auth(args: argparse.Namespace) -> None:
@@ -387,6 +422,9 @@ def cmd_raw(args: argparse.Namespace) -> None:
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="ornament", description="Ornament Health API CLI")
     sub = p.add_subparsers(dest="cmd", required=True)
+
+    ob = sub.add_parser("onboard", help="Print the Ornament Pro onboarding checklist")
+    ob.set_defaults(func=cmd_onboard)
 
     a = sub.add_parser("auth", help="Manage API key")
     a_sub = a.add_subparsers(dest="auth_cmd", required=True)

@@ -6,9 +6,19 @@ A [Claude Code](https://docs.claude.com/en/docs/agents-and-tools/claude-code/ove
 - Resolves biomarker names + reference ranges via Ornament's thesaurus, then converts ranges into the lab's original units so the displayed `Reference` column is directly comparable to the displayed `Value`.
 - Full progressive-disclosure layout: most-common tasks in `SKILL.md`, full API map in `references/api.md`, gotchas in `references/data-model.md`, recipes in `references/cookbook.md`.
 
-## Install
+## Prerequisites
 
-### Via `skills` CLI ([skills.sh](https://www.skills.sh))
+The Ornament Health API is gated — you need a **Pro account** and at least one linked patient profile before this skill can do anything useful.
+
+1. **Sign up at https://pro.ornament.health/** (email or SSO; free tier is enough).
+2. **Link a patient** — usually yourself. In Ornament Pro open **Patients → Invite patient**, copy the unique invite link, and open it in another browser (or send it to the patient you want to follow). The patient signs in / signs up via that link and grants you read access.
+3. **Get the API key**: Pro → **Account → Developer tools → Get API Key**. It's a long JWE token (starts with `eyJhbGciOiJBMjU2S1ciLCJlbmMi…`).
+
+> Don't want to click through it yourself? After the skill is installed, you can ask Claude to drive the steps above through a browser — Claude can use any browser-automation skill it has available (`agent-browser`, computer-use MCP, etc.) to open the dashboard, register, copy the key, and run `auth set` for you. The skill ships an `ornament.py onboard` command that prints the exact checklist Claude will follow — see below.
+
+## Install the skill
+
+### Via [skills.sh](https://www.skills.sh) CLI
 
 ```bash
 npx skills add neoromantic/ornament-skill
@@ -26,15 +36,13 @@ Or place the contents of this repo anywhere Claude Code scans for skills (projec
 
 ## Configure your API key
 
-Get a JWE token from Ornament Pro → Account → Developer tools → "Get API Key" (instructions: https://ornament.readme.io/reference/obtaining-api-key).
-
-Then save it once:
+Once you have the JWE token from the Prerequisites step:
 
 ```bash
-# Interactive (input hidden):
+# Interactive (hidden input):
 ~/.claude/skills/ornament/scripts/ornament.py auth set
 
-# Or set the env var:
+# Or set an env var for the current shell:
 export ORNAMENT_API_KEY='eyJ…'
 ```
 
@@ -42,11 +50,18 @@ The CLI looks at `ORNAMENT_API_KEY` first, then falls back to `~/.config/ornamen
 
 ```bash
 ~/.claude/skills/ornament/scripts/ornament.py auth status
+~/.claude/skills/ornament/scripts/ornament.py profiles
+```
+
+Need the full onboarding checklist (e.g. you forgot what's next)?
+
+```bash
+~/.claude/skills/ornament/scripts/ornament.py onboard
 ```
 
 ## Use
 
-Once the skill is installed and the key is set, you can just ask Claude things like:
+Once the skill is installed, the Pro account is set up, and the key is configured, you can just ask Claude things like:
 
 - "Show my Ornament profiles"
 - "What's abnormal in my latest tests since the start of 2024?"

@@ -11,21 +11,38 @@ The skill ships a single Python 3 CLI — `scripts/ornament.py` — that wraps t
 
 ## Prerequisites
 
-1. Ornament API key (JWE token from https://ornament.readme.io/reference/obtaining-api-key).
-2. Saved in `ORNAMENT_API_KEY` env var **or** in `~/.config/ornament/api_key`.
+The API is only accessible to **Ornament Pro** accounts. Before this skill is useful:
 
-Check or set:
+1. **Create a Pro account** at https://pro.ornament.health/ (free tier exists; sign up with email or SSO).
+2. **Link a patient** — either yourself or someone who's granted access:
+   - In Ornament Pro → "Patients" → "Invite patient", copy the invite link, send it to the patient (or open it yourself in another browser if it's your own profile).
+   - The patient signs in / signs up via that link and authorises read access to their lab data.
+   - Each linked patient becomes a PID (UUID) visible to your API key.
+3. **Get the API key** at Pro → Account → "Developer tools" → "Get API Key". It's a long-lived JWE token (starts with `eyJhbGciOiJBMjU2S1ciLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIn0.…`).
+4. **Save the key** to either `ORNAMENT_API_KEY` env var or `~/.config/ornament/api_key`:
 
 ```bash
-~/.claude/skills/ornament/scripts/ornament.py auth status
-~/.claude/skills/ornament/scripts/ornament.py auth set     # prompts hidden input
+~/.claude/skills/ornament/scripts/ornament.py auth set     # prompts for hidden input
+~/.claude/skills/ornament/scripts/ornament.py auth status  # verify
 ```
+
+5. **Verify** the key sees your patients:
+
+```bash
+~/.claude/skills/ornament/scripts/ornament.py profiles
+```
+
+The list always includes one auto-generated "Daniel Smith" demo patient (`isDemoPatient: true`) — that's normal. Your real linked profile(s) appear alongside it.
+
+### Don't have a Pro account yet?
+
+Run `ornament.py onboard` to see the step-by-step checklist, then either complete it manually or **ask Claude to drive a browser through it** — Claude can use the `agent-browser` skill to open https://pro.ornament.health, register, copy the API key, and run `auth set` for you. Just say "use agent-browser to onboard me to Ornament" once `agent-browser` is available.
 
 Detailed setup: [references/setup.md](references/setup.md).
 
 ## Most-common tasks (do these first)
 
-The `--profile` argument accepts a PID (UUID), a name substring (`"Сергей"`), or the literal `me` (the first non-demo profile). Default is `me`.
+The `--profile` argument accepts a PID (UUID), a name substring (e.g. `"Jane"`), or the literal `me` (the first non-demo profile). Default is `me`.
 
 ### 1. Who's in my account?
 
@@ -157,8 +174,8 @@ ornament.py history --name "холестерин" --json
 
 [references/cookbook.md](references/cookbook.md) — common asks and how to answer them, plus anti-patterns.
 
-## Defaults
+## Sergey's preferences
 
-- Thesaurus language: `RU` (override with `--lang EN`, `--lang EN+RU`, etc.).
-- `--profile` resolution: `me` picks the first non-demo profile in the account; otherwise pass a PID (UUID) or a name substring.
-- Output is table-shaped by default; pass `--json` when you want to pipe into `jq` or a script.
+- Default language: Russian (`--lang RU`).
+- Default profile resolution: `me` picks his profile (not the auto-generated demo patient).
+- He values terse, table-shaped output over wrapping prose; the CLI defaults are already tuned that way.
