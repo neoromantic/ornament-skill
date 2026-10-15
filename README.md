@@ -2,6 +2,8 @@
 
 A [Claude Code](https://docs.claude.com/en/docs/agents-and-tools/claude-code/overview) skill for reading patient data from the [Ornament Health API](https://ornament.readme.io/reference) — profiles, lab biomarkers with full history, abnormal-result filtering, health-condition risk scores.
 
+![Claude Code session: asked "what's out of range in my last labs and how has it changed?", Claude loads the ornament skill, runs ornament.py biomarkers --abnormal-only and ornament.py history, and answers with a table of four out-of-range biomarkers (ferritin, vitamin D, LDL cholesterol, TSH) showing latest value, reference range, history across three panels and trend. Patient and values are fictional.](docs/images/ornament-skill@2x.png)
+
 - Ships a single-file Python 3 CLI (`scripts/ornament.py`) — stdlib only, no dependencies.
 - Resolves biomarker names + reference ranges via Ornament's thesaurus, then converts ranges into the lab's original units so the displayed `Reference` column is directly comparable to the displayed `Value`.
 - Full progressive-disclosure layout: most-common tasks in `SKILL.md`, full API map in `references/api.md`, gotchas in `references/data-model.md`, recipes in `references/cookbook.md`.

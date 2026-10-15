@@ -1,0 +1,134 @@
+<!doctype html>
+<!--
+  Source for docs/images/ornament-skill.png — a Claude Code session using the
+  ornament skill. Patient, PID and lab values are fictional.
+
+  Regenerate (1600×1000 CSS px, 2x):
+    agent-browser --engine chrome set viewport 1600 1000 2
+    agent-browser --engine chrome open file://$PWD/docs/images/src/ornament-skill.html
+    agent-browser --engine chrome screenshot docs/images/ornament-skill@2x.png
+    sips -z 1000 1600 docs/images/ornament-skill@2x.png --out docs/images/ornament-skill.png
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ornament skill in Claude Code</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=block" rel="stylesheet">
+<style>
+  :root {
+    /* Claude Code dark theme */
+    --bg: #161514;
+    --text: #f4f4f4;
+    --dim: #999999;
+    --success: #4eba65;
+    --user-bg: #373737;
+    --rule: #808080;
+    --code: #b1b9f9;
+    --font: 22px;
+    --lh: 27px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1600px; height: 1000px; background: var(--bg); overflow: hidden; }
+  body {
+    font-family: "JetBrains Mono", "JetBrainsMono Nerd Font Mono", "SF Mono", Menlo, monospace;
+    font-size: var(--font);
+    line-height: var(--lh);
+    color: var(--text);
+    font-variant-ligatures: none;
+    -webkit-font-smoothing: antialiased;
+  }
+  .screen { position: absolute; inset: 0; padding: 24px 40px 16px; display: flex; flex-direction: column; }
+  .l { white-space: pre; height: var(--lh); }
+  .dim { color: var(--dim); }
+  .b { font-weight: 700; }
+  .code { color: var(--code); }
+  .user { background: var(--user-bg); margin: 0 -40px; padding: 0 40px; }
+  /* ⏺ is drawn as a circle so it is crisp regardless of font fallback */
+  .dot { display: inline-block; width: 1.2ch; height: var(--lh); position: relative; vertical-align: top; }
+  .dot::before {
+    content: ""; position: absolute; left: 0.05ch; top: 50%;
+    width: 0.62em; height: 0.62em; margin-top: -0.31em; border-radius: 50%; background: currentColor;
+  }
+  .dot + .sp { display: inline-block; width: 0.8ch; }
+  .ok { color: var(--success); }
+  .rule { height: var(--lh); position: relative; margin: 0 -40px; }
+  .rule::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; border-top: 2px solid var(--rule); }
+  .cursor { display: inline-block; width: 1ch; height: 1.1em; background: #e8e8e8; vertical-align: -0.2em; }
+  .spacer { flex: 1; }
+  /* ⎿ and ❯ are not in JetBrains Mono; draw them at exactly 1ch */
+  .elbow { display: inline-block; width: 1ch; height: var(--lh); position: relative; vertical-align: top; }
+  .elbow::before {
+    content: ""; position: absolute; left: 0.3ch; top: 0.08em; width: 0.7ch; height: 0.72em;
+    border-left: 2px solid var(--dim); border-bottom: 2px solid var(--dim);
+  }
+  .chev { display: inline-block; width: 1ch; height: var(--lh); vertical-align: top; }
+  .chev svg { display: block; width: 100%; height: 100%; }
+</style>
+</head>
+<body>
+<div class="screen">
+  <div class="l user"><span class="dim"><span class="chev"><svg viewBox="0 0 13.2 27"><path d="M3.4 8 L9.8 13.5 L3.4 19" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span> </span>what's out of range in my last labs and how has it changed?</div>
+  <div class="l"> </div>
+
+  <div class="l"><span class="dot ok"></span><span class="sp"></span><span class="b">Skill</span>(ornament)</div>
+  <div class="l">  <span class="elbow"></span>  Successfully loaded skill</div>
+  <div class="l"> </div>
+
+  <div class="l"><span class="dot ok"></span><span class="sp"></span><span class="b">Bash</span>(~/.claude/skills/ornament/scripts/ornament.py biomarkers --abnormal-only --lang EN)</div>
+  <div class="l">  <span class="elbow"></span>  Profile: Maria Novak  PID 3f9c2a71-5b0e-4d8a-9e61-2c7d4b8f1a05</div>
+  <div class="l">     Biomarkers shown: 4 (of 58 total recorded)</div>
+  <div class="l dim">     … +7 lines (ctrl+o to expand)</div>
+  <div class="l"> </div>
+
+  <div class="l"><span class="dot ok"></span><span class="sp"></span><span class="b">Bash</span>(for n in ferritin "vitamin d" ldl tsh; do ~/.claude/skills/ornament/scripts/ornament.py history --name</div>
+  <div class="l">  "$n" --lang EN; done)</div>
+  <div class="l">  <span class="elbow"></span>  Profile: Maria Novak  PID 3f9c2a71-5b0e-4d8a-9e61-2c7d4b8f1a05</div>
+  <div class="l dim">     … +33 lines (ctrl+o to expand)</div>
+  <div class="l"> </div>
+
+  <div class="l"><span class="dot"></span><span class="sp"></span>Four markers are out of range in your <span class="b">22 Sep 2026</span> panel. History is Mar 2025 → Jan 2026 → Sep 2026:</div>
+  <div class="l"> </div>
+  <div id="table"></div>
+  <div class="l"> </div>
+  <div class="l">  Ferritin is down 71% since March 2025; TSH was in range in both earlier panels.</div>
+  <div class="l"> </div>
+
+  <div class="spacer"></div>
+  <div class="rule"></div>
+  <div class="l"><span class="chev"><svg viewBox="0 0 13.2 27"><path d="M3.4 8 L9.8 13.5 L3.4 19" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span> <span class="cursor"></span></div>
+  <div class="rule"></div>
+  <div class="l dim">  ? for shortcuts</div>
+</div>
+
+<script>
+  // Claude Code renders markdown tables with box-drawing borders, centred
+  // headers, left-aligned cells and a separator between every row.
+  const header = ["Biomarker", "Latest", "Range", "History", "Trend"];
+  const rows = [
+    ["Ferritin",         "**11** ng/mL",   "15–150",  "38 → 22 → 11",    "↓ further below"],
+    ["Vitamin D, 25-OH", "**21** ng/mL",   "30–100",  "14 → 18 → 21",    "↑ closing in"],
+    ["LDL cholesterol",  "**3.6** mmol/L", "< 3.0",   "2.9 → 3.3 → 3.6", "↑ further above"],
+    ["TSH",              "**4.6** mIU/L",  "0.4–4.0", "2.8 → 3.9 → 4.6", "↑ first time out"],
+  ];
+  const plain = s => s.replace(/\*\*/g, "");
+  const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+  const html = s => esc(s).replace(/\*\*(.+?)\*\*/g, '<span class="b">$1</span>');
+  const widths = header.map((h, i) => Math.max(h.length, ...rows.map(r => plain(r[i]).length)));
+  const border = (l, m, r) => "  " + l + widths.map(w => "─".repeat(w + 2)).join(m) + r;
+  const lines = [border("┌", "┬", "┐")];
+  lines.push("  │" + header.map((h, i) => {
+    const pad = widths[i] - h.length, left = Math.floor(pad / 2);
+    return " " + " ".repeat(left) + esc(h) + " ".repeat(pad - left) + " ";
+  }).join("│") + "│");
+  rows.forEach((r, ri) => {
+    lines.push(border("├", "┼", "┤"));
+    lines.push("  │" + r.map((c, i) => " " + html(c) + " ".repeat(widths[i] - plain(c).length) + " ").join("│") + "│");
+  });
+  lines.push(border("└", "┴", "┘"));
+  document.getElementById("table").innerHTML =
+    lines.map(l => `<div class="l">${l}</div>`).join("");
+</script>
+</body>
+</html>

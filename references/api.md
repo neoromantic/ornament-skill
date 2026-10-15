@@ -50,7 +50,7 @@ List patients linked to the calling API key. No params.
 ```json
 [{
   "pid":"uuid","ssoId":"uuid","createdAt":1740678724,"name":"Patient 1",
-  "sex":"M","birthday":"1990-09-04","lastSubmissionsUpdate":1740739547,
+  "sex":"M","birthday":"1985-06-15","lastSubmissionsUpdate":1740739547,
   "isTransferred":false,"isArchived":false,"isFavorite":false,"isDemoPatient":false
 }]
 ```
