@@ -1,6 +1,6 @@
 ---
 name: ornament
-description: Access the Ornament Health API to read patient profiles, lab biomarkers, history, and health-condition scores. Use when the user asks about their (or a patient's) blood tests, biomarkers, lab values, abnormal results, health trends, or any Ornament Health data; or when they say "ornament", "анализы", "биомаркеры", "show my labs", "что у меня с холестерином", "что отклонилось".
+description: Read Ornament Health patient profiles, lab biomarkers, measurement history, abnormal results, and health-condition scores. Use when the user wants data from their Ornament account.
 license: MIT
 metadata: {"openclaw": {"requires": {"env": ["ORNAMENT_API_KEY"]}, "primaryEnv": "ORNAMENT_API_KEY"}}
 ---
@@ -82,7 +82,7 @@ ornament.py biomarkers --by-category                # group by display category
 
 ### Health conditions / risk scores
 
-Two sources of conditions; both work.
+Two sources of conditions. Health Advisor access depends on the API key; `advisor states` can return HTTP 403 even when the Medical Data commands work.
 
 ```bash
 # Medical Data API — quick scores for current PID
@@ -144,9 +144,9 @@ Full list of endpoints, schemas, and quirks: [references/api.md](references/api.
 | Flag | Where | What |
 |---|---|---|
 | `--profile <pid\|name\|me>` | most commands | Default `me` = first non-demo profile. |
-| `--lang RU\|EN\|EN+RU\|…` | biomarkers, history, thesaurus | Thesaurus localisation (default `RU`). |
+| `--lang RU\|EN\|EN+RU\|…` | biomarkers, history, thesaurus | Thesaurus localisation (default `RU`); units and categories use the first language. |
 | `--since YYYY-MM-DD` | biomarkers, submissions | Date filter. |
-| `--limit N`, `--skip N` | biomarkers, submissions | Client-side paging. |
+| `--limit N`, `--skip N` | biomarkers, submissions | Server-side for biomarkers (before local filters); client-side for submissions. |
 | `--abnormal-only` | biomarkers | Only `status: A`. |
 | `--by-category` | biomarkers | Group by display category. |
 | `--name <substr>` | biomarkers, history | Filter by biomarker name (matches synonyms too). |
@@ -156,7 +156,7 @@ Full list of endpoints, schemas, and quirks: [references/api.md](references/api.
 
 ## JSON output
 
-Every read command supports `--json`. ISO date strings are added next to Unix timestamps and unit names are resolved, so the output is self-contained:
+`profiles`, `biomarkers`, `history`, and `submissions` support `--json`; `conditions`, `advisor`, and `raw` always return JSON. Biomarker entries include ISO dates and resolved unit names. The `biomarkers` filters apply to both table and JSON output:
 
 ```bash
 ornament.py biomarkers --json | jq '.biomarkers | length'
@@ -173,9 +173,3 @@ ornament.py history --name "холестерин" --json
 ## Recipes / patterns
 
 [references/cookbook.md](references/cookbook.md) — common asks and how to answer them, plus anti-patterns.
-
-## Sergey's preferences
-
-- Default language: Russian (`--lang RU`).
-- Default profile resolution: `me` picks his profile (not the auto-generated demo patient).
-- He values terse, table-shaped output over wrapping prose; the CLI defaults are already tuned that way.

@@ -170,21 +170,6 @@ def cmd_biomarkers(args: argparse.Namespace) -> None:
     units = L.load_units(args.lang)
     cats = L.load_biomarker_categories(args.lang) if args.by_category else {}
 
-    if args.json:
-        enriched = []
-        for b in data.get("biomarkers", []):
-            name = L.biomarker_name(b["id"], thes)
-            entries = []
-            for e in (b.get("entries") or []):
-                ee = dict(e)
-                ee["dateISO"] = _fmt_date(e["date"])
-                ee["unit"] = units.get(e.get("originalUnitId"), "")
-                entries.append(ee)
-            enriched.append({**b, "name": name, "entries": entries})
-        out = {**data, "biomarkers": enriched, "profile": {"pid": pid, "name": profile.get("name")}}
-        _print_json(out)
-        return
-
     biomarkers = data.get("biomarkers", [])
     refs = data.get("refs", {})
 
@@ -204,6 +189,12 @@ def cmd_biomarkers(args: argparse.Namespace) -> None:
             syn = (thes.get(b["id"]) or {}).get("synonyms") or []
             if not any(name_filter in (s.get("title", "") or "").lower() for s in syn):
                 continue
+        if args.json:
+            for e in entries:
+                e["dateISO"] = _fmt_date(e["date"])
+                e["unit"] = units.get(e.get("originalUnitId"), "")
+            rows.append({**b, "name": name})
+            continue
         val, unit = L.display_value(latest, b["id"], thes, units)
         ref = L.reference_in_original_unit(b["id"], refs, latest, thes)
         rows.append({
@@ -217,6 +208,11 @@ def cmd_biomarkers(args: argparse.Namespace) -> None:
             "status": b.get("status"),
             "count": len(entries),
         })
+
+    if args.json:
+        out = {**data, "biomarkers": rows, "profile": {"pid": pid, "name": profile.get("name")}}
+        _print_json(out)
+        return
 
     rows.sort(key=lambda r: (-r["date"], r["name"]))
 

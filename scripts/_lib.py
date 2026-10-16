@@ -129,6 +129,7 @@ def load_biomarker_thesaurus(lang: str = "RU", refresh: bool = False) -> dict[in
 
 def load_units(lang: str = "RU", refresh: bool = False) -> dict[int, str]:
     """Return {unit_id: title}."""
+    lang = lang.split("+")[0]
     p = _cache_path(f"units_{lang}.json")
     if refresh or not _fresh(p):
         data = request("GET", "/thesaurus-api/public/v1.1/measurement-units", params={"lang": lang})
@@ -138,6 +139,7 @@ def load_units(lang: str = "RU", refresh: bool = False) -> dict[int, str]:
 
 
 def load_biomarker_categories(lang: str = "RU", refresh: bool = False) -> dict[int, dict[str, Any]]:
+    lang = lang.split("+")[0]
     p = _cache_path(f"categories_{lang}.json")
     if refresh or not _fresh(p):
         data = request("GET", "/thesaurus-api/public/v1.0/biomarker-categories", params={"lang": lang})

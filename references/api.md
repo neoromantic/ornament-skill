@@ -2,6 +2,8 @@
 
 Compiled from https://ornament.readme.io/reference (41 readme pages, 60 OAS endpoints, 161 schemas).
 
+Read endpoints checked against the current documentation and live production API on 2026-10-16. The submissions pagination bug still occurs; Health Advisor `actual-states` returned HTTP 403 for the configured key.
+
 ## Auth, base, conventions
 
 **Base hosts**
