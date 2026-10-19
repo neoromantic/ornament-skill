@@ -1,6 +1,6 @@
 ---
 name: ornament
-description: Read Ornament Health patient profiles, lab biomarkers, measurement history, abnormal results, and health-condition scores. Use when the user wants data from their Ornament account.
+description: Read Ornament Health patient profiles, lab biomarkers, measurement history, abnormal results, and health-condition scores. Use when the user asks about their (or a patient's) blood tests, biomarkers, lab values, abnormal results, health trends, or any Ornament Health data; or when they say "ornament", "анализы", "биомаркеры", "show my labs", "что у меня с холестерином", "что отклонилось".
 license: MIT
 metadata: {"openclaw": {"requires": {"env": ["ORNAMENT_API_KEY"]}, "primaryEnv": "ORNAMENT_API_KEY"}}
 ---
