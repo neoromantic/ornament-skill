@@ -16,12 +16,11 @@ from pathlib import Path
 from typing import Any
 
 sys.path.insert(0, str(Path(__file__).parent))
-import _lib as L  # noqa: E402
-
+import _lib as L
 
 # ---------- helpers ----------
 
-def _fmt_date(ts: int | float) -> str:
+def _fmt_date(ts: float) -> str:
     return dt.date.fromtimestamp(int(ts)).isoformat()
 
 
@@ -88,7 +87,7 @@ Don't want to click through it yourself?
 """
 
 
-def cmd_onboard(args: argparse.Namespace) -> None:  # noqa: ARG001
+def cmd_onboard(args: argparse.Namespace) -> None:
     sys.stdout.write(ONBOARD_STEPS)
 
 
@@ -359,7 +358,7 @@ def cmd_submissions(args: argparse.Namespace) -> None:
 # ---------- health conditions ----------
 
 def cmd_conditions(args: argparse.Namespace) -> None:
-    pid, profile = _resolve_profile(args.profile)
+    pid, _profile = _resolve_profile(args.profile)
     endpoint = "/medical-data-api/public/v1.0/profile/health-conditions-raw" if args.raw else \
                "/medical-data-api/public/v1.0/profile/health-conditions"
     data = L.request("GET", endpoint, params={"pid": pid})
@@ -369,7 +368,7 @@ def cmd_conditions(args: argparse.Namespace) -> None:
 # ---------- health advisor ----------
 
 def cmd_advisor(args: argparse.Namespace) -> None:
-    pid, profile = _resolve_profile(args.profile)
+    pid, _profile = _resolve_profile(args.profile)
     if args.advisor_cmd == "raw":
         data = L.request("GET", "/public/health-advisor-api/v1.0/profile-health-conditions-raw", params={"pid": pid})
     else:
