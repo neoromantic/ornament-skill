@@ -30,7 +30,7 @@ The Ornament Health API is gated — you need a **Pro account** and at least one
 npx skills add neoromantic/ornament-skill -g
 ```
 
-`-g` installs it for your user, so Claude Code finds it at `~/.claude/skills/ornament/` in the next session. Update later with `npx skills update ornament`.
+`-g` installs it for your user, so Claude Code finds it at `~/.claude/skills/ornament/` in the next session. Update later with `npx skills update ornament -g`.
 
 ### Manually
 
