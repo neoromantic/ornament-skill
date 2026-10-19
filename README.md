@@ -8,6 +8,10 @@ A [Claude Code](https://docs.claude.com/en/docs/agents-and-tools/claude-code/ove
 - Resolves biomarker names + reference ranges via Ornament's thesaurus, then converts ranges into the lab's original units so the displayed `Reference` column is directly comparable to the displayed `Value`.
 - Full progressive-disclosure layout: most-common tasks in `SKILL.md`, full API map in `references/api.md`, gotchas in `references/data-model.md`, recipes in `references/cookbook.md`.
 
+> **Unofficial.** This skill is not affiliated with, endorsed by or supported by Ornament Health. It reads your data through Ornament's public API with your own key.
+>
+> **Not medical advice.** The skill shows what your lab reports say. It does not diagnose anything or recommend treatment. Talk to a doctor about your results.
+
 ## Prerequisites
 
 The Ornament Health API is gated — you need a **Pro account** and at least one linked patient profile before this skill can do anything useful.
@@ -23,10 +27,10 @@ The Ornament Health API is gated — you need a **Pro account** and at least one
 ### Via [skills.sh](https://www.skills.sh) CLI
 
 ```bash
-npx skills add neoromantic/ornament-skill
+npx skills add neoromantic/ornament-skill -g
 ```
 
-That drops the skill into `~/.claude/skills/ornament/` and Claude Code will discover it automatically on next session.
+`-g` installs it for your user, so Claude Code finds it at `~/.claude/skills/ornament/` in the next session. Update later with `npx skills update ornament`.
 
 ### Manually
 
@@ -100,10 +104,22 @@ references/
 scripts/
   ornament.py             CLI entry-point (10 subcommands)
   _lib.py                 Shared library: auth, HTTP, thesaurus cache, unit conversion
+tests/                    Offline unit tests and the SKILL.md frontmatter check
 ```
 
 The CLI has no runtime dependencies — just Python 3.10+.
 
-## License
+## Development
 
-[MIT](LICENSE).
+The tests run offline and need only [uv](https://docs.astral.sh/uv/):
+
+```bash
+uv run --no-project python -m unittest discover -s tests   # unit tests + frontmatter check
+uvx ruff check .                                           # lint
+```
+
+## Contributing, security, license
+
+- Contributing: see [CONTRIBUTING.md](CONTRIBUTING.md).
+- Security issues: see [SECURITY.md](SECURITY.md).
+- License: [MIT](LICENSE).
