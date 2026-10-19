@@ -1,0 +1,40 @@
+# CI for the skill: ruff, the offline unittest suite (which also checks the SKILL.md
+# frontmatter) on the oldest and newest supported Python, and devkit's hygiene checks.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  build:
+    uses: neoromantic/devkit/.github/workflows/ci-python.yml@v1
+    permissions:
+      contents: read
+    with:
+      python-version: '["3.10", "3.14"]'
+      test-command: python -m unittest discover -s tests -v
+
+  hygiene:
+    uses: neoromantic/devkit/.github/workflows/hygiene.yml@v1
+    permissions:
+      contents: read
+
+  # The one check to require in a branch ruleset. It is named exactly "ci".
+  ci:
+    needs: [build, hygiene]
+    if: always()
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - name: All jobs passed
+        if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
+        run: exit 1
