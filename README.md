@@ -123,3 +123,5 @@ uvx ruff check .                                           # lint
 - Contributing: see [CONTRIBUTING.md](CONTRIBUTING.md).
 - Security issues: see [SECURITY.md](SECURITY.md).
 - License: [MIT](LICENSE).
+
+Made by [Sergey Baus](https://www.sergeybaus.com)
